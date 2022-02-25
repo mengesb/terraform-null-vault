@@ -1,0 +1,31 @@
+formatter: markdown document
+header-from: header.txt
+footer-from: footer.txt
+
+sections:
+  show:
+    - header
+    - footer
+    - inputs
+    - outputs
+    - requirements
+
+output-values:
+  enabled: false
+
+sort:
+  enabled: true
+  by: required
+
+settings:
+  anchor: true
+  default: true
+  escape: true
+  hide-empty: false
+  html: false
+  indent: 2
+  lockfile: false
+  required: true
+  sensitive: true
+  type: true
+  

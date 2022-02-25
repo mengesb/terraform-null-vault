@@ -1,0 +1,18 @@
+api_addr      = "https://${hostname}:8200"
+cluster_addr  = "https://${hostname}:8201"
+disable_mlock = true
+ui            = true
+
+listener "tcp" {
+  address                  = "127.0.0.1:8200"
+  cluster_address          = "127.0.0.1:8201"
+  tls_cert_file            = "${tls_cert_file}"
+  tls_key_file             = "${tls_key_file}"
+  tls_min_version          = "tls12"
+  tls_disable_client_certs = "true"
+}
+
+storage "raft" {
+  path    = "${raft_path}"
+  node_id = "${raft_node_id}"
+}

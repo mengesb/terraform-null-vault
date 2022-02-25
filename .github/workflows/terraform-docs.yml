@@ -1,0 +1,21 @@
+---
+name: Generate terraform docs
+on:
+  - pull_request
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Render terraform docs
+      uses: terraform-docs/gh-actions@v0.11.0
+      with:
+        working-dir: .
+        output-file: README.md
+        output-method: replace
+        git-push: "true"
+        config-file: .terraform-docs.yml
+        git-commit-message: "terraform-docs: autogenerate README.md"
