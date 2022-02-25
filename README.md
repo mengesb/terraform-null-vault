@@ -1,5 +1,3 @@
-# Usage
-
 <!--- BEGIN_TF_DOCS --->
 <!-- markdownlint-disable MD024 MD033 -->
 # terraform-null-vault
@@ -247,4 +245,3 @@ Author: Brian Menges (@mengesb)
 ```
 
 <!--- END_TF_DOCS --->
-
