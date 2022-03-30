@@ -120,7 +120,7 @@ resource "null_resource" "vault-secret-engines" {
     environment = {
       VAULT_ADDR   = "https://${data.external.hostname.result.hostname}:8200"
       VAULT_CACERT = abspath(local_file.vault-cert.filename)
-      VAULT_TOKEN  = regex("s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
+      VAULT_TOKEN  = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
     }
     command = "vault secrets enable database"
   }
@@ -129,7 +129,7 @@ resource "null_resource" "vault-secret-engines" {
     environment = {
       VAULT_ADDR   = "https://${data.external.hostname.result.hostname}:8200"
       VAULT_CACERT = abspath(local_file.vault-cert.filename)
-      VAULT_TOKEN  = regex("s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
+      VAULT_TOKEN  = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
     }
     command = "vault secrets enable -version=2 -path=secret kv"
   }
@@ -138,7 +138,7 @@ resource "null_resource" "vault-secret-engines" {
     environment = {
       VAULT_ADDR   = "https://${data.external.hostname.result.hostname}:8200"
       VAULT_CACERT = abspath(local_file.vault-cert.filename)
-      VAULT_TOKEN  = regex("s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
+      VAULT_TOKEN  = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
     }
     command = "vault secrets enable transit"
   }
