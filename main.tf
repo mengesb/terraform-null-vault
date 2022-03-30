@@ -101,7 +101,7 @@ resource "null_resource" "vault-audit" {
     environment = {
       VAULT_ADDR   = "https://${data.external.hostname.result.hostname}:8200"
       VAULT_CACERT = abspath(local_file.vault-cert.filename)
-      VAULT_TOKEN  = regex("s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
+      VAULT_TOKEN  = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
     }
     command = "vault audit enable -path=audit -local=true -description=\"Local audit log\" file file_path=vault.audit.log"
   }
