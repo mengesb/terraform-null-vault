@@ -41,7 +41,7 @@ output "VAULT_CACERT" {
 
 output "VAULT_TOKEN" {
   sensitive   = true
-  value       = regex("s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
+  value       = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
   description = "Vault environment variable `VAULT_TOKEN` (i.e. Vault root token)"
 }
 
