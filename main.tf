@@ -91,7 +91,7 @@ resource "null_resource" "vault-unseal" {
 
 resource "null_resource" "vault-audit" {
   depends_on = [
-    local_file.chain,
+    local_sensitive_file.chain,
     null_resource.vault-start,
     null_resource.vault-init,
     null_resource.vault-unseal
