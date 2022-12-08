@@ -8,7 +8,7 @@ Terraform module to build a local vault TLS secured instance for developers
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.0)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.2.0)
 
 - <a name="requirement_external"></a> [external](#requirement\_external) (~> 2.2)
 
