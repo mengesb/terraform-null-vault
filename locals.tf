@@ -49,7 +49,7 @@ resource "local_sensitive_file" "vault-cert" {
 }
 
 resource "local_sensitive_file" "vault-hcl" {
-  content           = templatefile("${path.module}/files/vault.hcl.tftpl", local.vault-hcl)
-  filename          = "${path.root}/vault/vault.hcl"
-  file_permission   = "0600"
+  content         = templatefile("${path.module}/files/vault.hcl.tftpl", local.vault-hcl)
+  filename        = "${path.root}/vault/vault.hcl"
+  file_permission = "0600"
 }
