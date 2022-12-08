@@ -245,3 +245,68 @@ Author: Brian Menges (@mengesb)
 ```
 
 <!--- END_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
+<!-- markdownlint-disable MD024 MD033 -->
+# terraform-null-vault
+
+Terraform module to build a local vault TLS secured instance for developers
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.2.0 |
+| <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.2 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | ~> 2.1 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.1 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | ~> 4.0 |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_CA"></a> [CA](#input\_CA) | CA TLS certificate settings | ```object({ country = optional(string) province = optional(string) locality = optional(string) common_name = string organization = optional(string) organizational_unit = optional(string) })``` | ```{ "common_name": "Vault Demo CA", "country": "US", "locality": "San Francisco", "organization": "Demo Organization", "organizational_unit": "Demo Engineering Team", "province": "California" }``` | no |
+| <a name="input_IntermediateCA"></a> [IntermediateCA](#input\_IntermediateCA) | Intermediate CA TLS certificate settings | ```object({ country = optional(string) province = optional(string) locality = optional(string) common_name = string organization = optional(string) organizational_unit = optional(string) })``` | ```{ "common_name": "Vault Demo CA", "country": "US", "locality": "San Francisco", "organization": "Demo Organization", "organizational_unit": "Demo Engineering Team", "province": "California" }``` | no |
+| <a name="input_ca_allowed_uses"></a> [ca\_allowed\_uses](#input\_ca\_allowed\_uses) | List of allowed uses parameters for CA certificate | `list(string)` | ```[ "cert_signing", "client_auth", "crl_signing", "digital_signature", "key_encipherment", "ocsp_signing", "server_auth" ]``` | no |
+| <a name="input_cert_allowed_uses"></a> [cert\_allowed\_uses](#input\_cert\_allowed\_uses) | List of allowed uses parameters for CA certificate | `list(string)` | ```[ "digital_signature", "key_encipherment", "server_auth" ]``` | no |
+| <a name="input_intermediateca_allowed_uses"></a> [intermediateca\_allowed\_uses](#input\_intermediateca\_allowed\_uses) | List of allowed uses parameters for CA certificate | `list(string)` | ```[ "cert_signing", "client_auth", "crl_signing", "digital_signature", "key_encipherment", "ocsp_signing", "server_auth" ]``` | no |
+| <a name="input_ip_addresses"></a> [ip\_addresses](#input\_ip\_addresses) | List of IP addresses for TLS certificates | `list(string)` | ```[ "127.0.0.1" ]``` | no |
+| <a name="input_vault-tls"></a> [vault-tls](#input\_vault-tls) | Vault TLS certificate settings | ```object({ country = optional(string) province = optional(string) locality = optional(string) organization = optional(string) organizational_unit = optional(string) })``` | ```{ "country": "US", "locality": "San Francisco", "organization": "Demo Organization", "organizational_unit": "Demo Engineering Team", "province": "California" }``` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_CA"></a> [CA](#output\_CA) | CA certificate |
+| <a name="output_IntermediateCA"></a> [IntermediateCA](#output\_IntermediateCA) | Intermediate CA certificate |
+| <a name="output_VAULT_ADDR"></a> [VAULT\_ADDR](#output\_VAULT\_ADDR) | Vault address |
+| <a name="output_VAULT_CACERT"></a> [VAULT\_CACERT](#output\_VAULT\_CACERT) | Vault environment variable `VAULT_CACERT` (Intermediate CA + CA) |
+| <a name="output_VAULT_TOKEN"></a> [VAULT\_TOKEN](#output\_VAULT\_TOKEN) | Vault environment variable `VAULT_TOKEN` (i.e. Vault root token) |
+| <a name="output_VAULT_UNSEAL"></a> [VAULT\_UNSEAL](#output\_VAULT\_UNSEAL) | Vault unseal token |
+| <a name="output_chain"></a> [chain](#output\_chain) | Certificate chain (Intermediate CA + CA) |
+| <a name="output_hostname"></a> [hostname](#output\_hostname) | System hostname |
+
+## Contributing
+
+Contributions are always welcome. Please consult our [CONTRIBUTING.md](CONTRIBUTING.md) file for more information on how to submit quality contributions.
+
+## License & Authors
+
+Author: Brian Menges (@mengesb)
+
+```text
+   Copyright 2022 Brian Menges
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+<!-- END_TF_DOCS -->
