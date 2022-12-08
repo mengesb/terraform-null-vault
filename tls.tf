@@ -19,7 +19,6 @@ resource "tls_private_key" "vault" {
 }
 
 resource "tls_self_signed_cert" "CA" {
-  key_algorithm         = tls_private_key.CA.algorithm
   private_key_pem       = tls_private_key.CA.private_key_pem
   validity_period_hours = 168
   is_ca_certificate     = true
@@ -37,7 +36,6 @@ resource "tls_self_signed_cert" "CA" {
 }
 
 resource "tls_cert_request" "IntermediateCA" {
-  key_algorithm   = tls_private_key.IntermediateCA.algorithm
   private_key_pem = tls_private_key.IntermediateCA.private_key_pem
 
   subject {
@@ -52,7 +50,6 @@ resource "tls_cert_request" "IntermediateCA" {
 
 resource "tls_locally_signed_cert" "IntermediateCA" {
   cert_request_pem      = tls_cert_request.IntermediateCA.cert_request_pem
-  ca_key_algorithm      = tls_private_key.CA.algorithm
   ca_private_key_pem    = tls_private_key.CA.private_key_pem
   ca_cert_pem           = tls_self_signed_cert.CA.cert_pem
   validity_period_hours = 72
@@ -63,7 +60,6 @@ resource "tls_locally_signed_cert" "IntermediateCA" {
 
 resource "tls_cert_request" "vault" {
   dns_names       = [data.external.hostname.result.hostname, "host.minikube.internal", "host.docker.internal", "localhost", "localhost.localdomain"]
-  key_algorithm   = tls_private_key.vault.algorithm
   private_key_pem = tls_private_key.vault.private_key_pem
 
   subject {
@@ -78,7 +74,6 @@ resource "tls_cert_request" "vault" {
 
 resource "tls_locally_signed_cert" "vault" {
   cert_request_pem      = tls_cert_request.vault.cert_request_pem
-  ca_key_algorithm      = tls_private_key.IntermediateCA.algorithm
   ca_private_key_pem    = tls_private_key.IntermediateCA.private_key_pem
   ca_cert_pem           = tls_locally_signed_cert.IntermediateCA.cert_pem
   validity_period_hours = 48

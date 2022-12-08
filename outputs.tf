@@ -11,19 +11,19 @@ output "hostname" {
 
 output "CA" {
   sensitive   = false
-  value       = abspath(local_file.CA.filename)
+  value       = abspath(local_sensitive_file.CA.filename)
   description = "CA certificate"
 }
 
 output "IntermediateCA" {
   sensitive   = false
-  value       = abspath(local_file.IntermediateCA.filename)
+  value       = abspath(local_sensitive_file.IntermediateCA.filename)
   description = "Intermediate CA certificate"
 }
 
 output "chain" {
   sensitive   = false
-  value       = abspath(local_file.chain.filename)
+  value       = abspath(local_sensitive_file.chain.filename)
   description = "Certificate chain (Intermediate CA + CA)"
 }
 
@@ -35,7 +35,7 @@ output "VAULT_ADDR" {
 
 output "VAULT_CACERT" {
   sensitive   = false
-  value       = abspath(local_file.chain.filename)
+  value       = abspath(local_sensitive_file.chain.filename)
   description = "Vault environment variable `VAULT_CACERT` (Intermediate CA + CA)"
 }
 

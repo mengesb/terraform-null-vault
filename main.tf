@@ -17,11 +17,11 @@ resource "null_resource" "vault-dir" {
 
 resource "null_resource" "vault-start" {
   depends_on = [
-    local_file.CA,
-    local_file.IntermediateCA,
-    local_file.chain,
-    local_file.vault-cert,
-    local_file.vault-hcl,
+    local_sensitive_file.CA,
+    local_sensitive_file.IntermediateCA,
+    local_sensitive_file.chain,
+    local_sensitive_file.vault-cert,
+    local_sensitive_file.vault-hcl,
     null_resource.vault-dir
   ]
 
@@ -58,7 +58,7 @@ resource "null_resource" "vault-init" {
   provisioner "local-exec" {
     environment = {
       VAULT_ADDR            = "https://${data.external.hostname.result.hostname}:8200"
-      VAULT_CACERT          = abspath(local_file.chain.filename)
+      VAULT_CACERT          = abspath(local_sensitive_file.chain.filename)
       VAULT_TLS_SERVER_NAME = data.external.hostname.result.hostname
     }
     command = "vault operator init -key-shares=1 -key-threshold=1 >${abspath(path.root)}/vault.init"
@@ -78,7 +78,7 @@ resource "null_resource" "vault-unseal" {
   provisioner "local-exec" {
     environment = {
       VAULT_ADDR       = "https://${data.external.hostname.result.hostname}:8200"
-      VAULT_CACERT     = abspath(local_file.chain.filename)
+      VAULT_CACERT     = abspath(local_sensitive_file.chain.filename)
       VAULT_UNSEAL_KEY = regex(".{44}$", split("\n", data.local_file.vault-init.content)[0])
     }
     command = "vault operator unseal $VAULT_UNSEAL_KEY"
@@ -91,7 +91,7 @@ resource "null_resource" "vault-unseal" {
 
 resource "null_resource" "vault-audit" {
   depends_on = [
-    local_file.chain,
+    local_sensitive_file.chain,
     null_resource.vault-start,
     null_resource.vault-init,
     null_resource.vault-unseal
@@ -100,7 +100,7 @@ resource "null_resource" "vault-audit" {
   provisioner "local-exec" {
     environment = {
       VAULT_ADDR   = "https://${data.external.hostname.result.hostname}:8200"
-      VAULT_CACERT = abspath(local_file.vault-cert.filename)
+      VAULT_CACERT = abspath(local_sensitive_file.vault-cert.filename)
       VAULT_TOKEN  = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
     }
     command = "vault audit enable -path=audit -local=true -description=\"Local audit log\" file file_path=vault.audit.log"
@@ -109,7 +109,7 @@ resource "null_resource" "vault-audit" {
 
 resource "null_resource" "vault-secret-engines" {
   depends_on = [
-    local_file.chain,
+    local_sensitive_file.chain,
     null_resource.vault-start,
     null_resource.vault-init,
     null_resource.vault-unseal,
@@ -119,7 +119,7 @@ resource "null_resource" "vault-secret-engines" {
   provisioner "local-exec" {
     environment = {
       VAULT_ADDR   = "https://${data.external.hostname.result.hostname}:8200"
-      VAULT_CACERT = abspath(local_file.vault-cert.filename)
+      VAULT_CACERT = abspath(local_sensitive_file.vault-cert.filename)
       VAULT_TOKEN  = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
     }
     command = "vault secrets enable database"
@@ -128,7 +128,7 @@ resource "null_resource" "vault-secret-engines" {
   provisioner "local-exec" {
     environment = {
       VAULT_ADDR   = "https://${data.external.hostname.result.hostname}:8200"
-      VAULT_CACERT = abspath(local_file.vault-cert.filename)
+      VAULT_CACERT = abspath(local_sensitive_file.vault-cert.filename)
       VAULT_TOKEN  = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
     }
     command = "vault secrets enable -version=2 -path=secret kv"
@@ -137,7 +137,7 @@ resource "null_resource" "vault-secret-engines" {
   provisioner "local-exec" {
     environment = {
       VAULT_ADDR   = "https://${data.external.hostname.result.hostname}:8200"
-      VAULT_CACERT = abspath(local_file.vault-cert.filename)
+      VAULT_CACERT = abspath(local_sensitive_file.vault-cert.filename)
       VAULT_TOKEN  = regex("h?v?s\\..{24}$", split("\n", data.local_file.vault-init.content)[2])
     }
     command = "vault secrets enable transit"
