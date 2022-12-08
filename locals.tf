@@ -14,7 +14,7 @@ locals {
 }
 
 resource "local_sensitive_file" "CA" {
-  content.             = tls_self_signed_cert.CA.cert_pem
+  content              = tls_self_signed_cert.CA.cert_pem
   filename             = "${path.root}/vault/tls/CA.pem"
   file_permission      = "0600"
   directory_permission = "0700"
